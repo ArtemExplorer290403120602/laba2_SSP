@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Photo {
     private Long id;
-    private byte[] data;
+    private byte[] date;
 }

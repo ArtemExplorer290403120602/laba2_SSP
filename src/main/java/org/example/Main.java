@@ -12,6 +12,7 @@ public class Main {
             System.out.println("Выберите действие:");
             System.out.println("1: Показать количество фотографий");
             System.out.println("2: Загрузить фотографии в базу данных");
+            System.out.println("3: Показать фотографию по ID");
             System.out.println("0: Выйти");
 
             int choice = scanner.nextInt();
@@ -31,6 +32,16 @@ public class Main {
                         System.out.println("Фотографии успешно загружены в базу данных.");
                     } catch (IOException e) {
                         e.printStackTrace();
+                    }
+                    break;
+                case 3:
+                    System.out.print("Введите ID фотографии для отображения: ");
+                    Long photoId = scanner.nextLong();
+                    Photo photo = jdbcConfig.getPhotoById(photoId);
+                    if (photo != null) {
+                        new PhotoViewer(photo); // Открываем PhotoViewer для отображения фото
+                    } else {
+                        System.out.println("Фотография с таким ID не найдена.");
                     }
                     break;
                 case 0:

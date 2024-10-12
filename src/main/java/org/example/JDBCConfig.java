@@ -12,10 +12,10 @@ import java.util.List;
 
 public class JDBCConfig {
     private Connection connection = null;
-    private final static String GET_PHOTO_BY_ID = null;
+    private final static String GET_PHOTO_BY_ID = "SELECT date FROM photo WHERE id = ?";
     private final static String SELECT_ALL_PHOTO = null;
-    private final static String PHOTO_ABOUT_FILE = "D:\\photo";//путь где лежат файлы
-    private final static String INSERT_PHOTO_SQL = "INSERT INTO photo (data) VALUES (?)"; // Запрос на вставку
+    private final static String PHOTO_ABOUT_FILE = "G:\\photo";//путь где лежат файлы
+    private final static String INSERT_PHOTO_SQL = "INSERT INTO photo (date) VALUES (?)"; // Запрос на вставку
 
     public JDBCConfig() {
         try {
@@ -44,11 +44,26 @@ public class JDBCConfig {
     public void uploadPhotosToDatabase(List<Photo> photos) {
         try (PreparedStatement preparedStatement = connection.prepareStatement(INSERT_PHOTO_SQL)) {
             for (Photo photo : photos) {
-                preparedStatement.setBytes(1, photo.getData());
+                preparedStatement.setBytes(1, photo.getDate());
                 preparedStatement.executeUpdate();
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Photo getPhotoById(Long id) {
+        Photo photo = null;
+        try (PreparedStatement preparedStatement = connection.prepareStatement(GET_PHOTO_BY_ID)) {
+            preparedStatement.setLong(1, id);
+            var resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                byte[] data = resultSet.getBytes("date");
+                photo = new Photo(id, data);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return photo;
     }
 }

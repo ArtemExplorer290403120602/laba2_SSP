@@ -8,3 +8,11 @@ create table photo
 
 alter table photo
     owner to postgres;
+
+    create table photo
+    (
+        id   bigserial not null
+            constraint photo_pk
+                primary key,
+        date oid       not null
+    );
