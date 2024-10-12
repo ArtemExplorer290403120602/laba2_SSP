@@ -1,0 +1,10 @@
+create table photo
+(
+    id   bigserial
+        constraint photo_pk
+            primary key,
+    date bytea not null
+);
+
+alter table photo
+    owner to postgres;
